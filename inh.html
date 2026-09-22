@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختبار القيادة - INH</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Tahoma, sans-serif;
+    background: #f5f7fb;
+    color: #202437;
+}
+
+.container {
+    width: 92%;
+    max-width: 850px;
+    margin: 35px auto;
+}
+
+.header {
+    background: linear-gradient(135deg, #4338ca, #7c3aed);
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(67,56,202,.20);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.header p {
+    margin: 8px 0 0;
+    font-size: 16px;
+}
+
+.logo {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 6px 22px;
+    border: 1px solid rgba(255,255,255,.5);
+    border-radius: 30px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.card {
+    background: white;
+    margin-top: 20px;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.06);
+}
+
+.info {
+    border-right: 5px solid #6366f1;
+}
+
+.info h2 {
+    margin-top: 0;
+}
+
+.question {
+    margin-bottom: 20px;
+}
+
+.question h3 {
+    font-size: 17px;
+    margin-top: 0;
+}
+
+.answer {
+    display: block;
+    background: #f7f8fc;
+    padding: 11px 14px;
+    margin: 8px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.answer:hover {
+    background: #ececff;
+}
+
+.answer input {
+    margin-left: 10px;
+    transform: scale(1.1);
+}
+
+.main-button {
+    width: 100%;
+    border: none;
+    background: #4f46e5;
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.main-button:hover {
+    background: #3730a3;
+}
+
+#result {
+    display: none;
+    text-align: center;
+}
+
+.result-title {
+    color: #4f46e5;
+}
+
+.scores {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.score {
+    background: #f1f2ff;
+    border-radius: 15px;
+    padding: 18px 35px;
+    min-width: 180px;
+}
+
+.score span {
+    display: block;
+    font-size: 30px;
+    font-weight: bold;
+    color: #4f46e5;
+}
+
+.style {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 25px 0;
+}
+
+.grid {
+    width: 400px;
+    height: 400px;
+    max-width: 90vw;
+    margin: 40px auto;
+    position: relative;
+    border-left: 3px solid #333;
+    border-bottom: 3px solid #333;
+    background:
+        linear-gradient(to right,
+        transparent 49.5%,
+        #ddd 49.5%,
+        #ddd 50.5%,
+        transparent 50.5%),
+        linear-gradient(to top,
+        transparent 49.5%,
+        #ddd 49.5%,
+        #ddd 50.5%,
+        transparent 50.5%);
+}
+
+.dot {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #ef4444;
+    border: 3px solid white;
+    border-radius: 50%;
+    transform: translate(-50%, 50%);
+    box-shadow: 0 3px 10px rgba(0,0,0,.3);
+}
+
+.grid-label {
+    position: absolute;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.team {
+    top: 8px;
+    right: 8px;
+    color: #15803d;
+}
+
+.country {
+    top: 8px;
+    left: 8px;
+    color: #2563eb;
+}
+
+.authoritarian {
+    bottom: 8px;
+    right: 8px;
+    color: #dc2626;
+}
+
+.impoverished {
+    bottom: 8px;
+    left: 8px;
+    color: #6b7280;
+}
+
+.x-axis {
+    position: absolute;
+    bottom: -42px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+}
+
+.y-axis {
+    position: absolute;
+    right: -70px;
+    top: 50%;
+    transform: rotate(90deg);
+    font-weight: bold;
+}
+
+.description {
+    background: #f7f7ff;
+    padding: 20px;
+    border-radius: 14px;
+    text-align: right;
+    margin-top: 25px;
+}
+
+.footer {
+    text-align: center;
+    color: #777;
+    font-size: 13px;
+    margin: 25px 0;
+}
+
+@media(max-width:600px) {
+    .container {
+        width: 95%;
+        margin: 20px auto;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .grid {
+        width: 300px;
+        height: 300px;
+    }
+
+    .y-axis {
+        right: -58px;
+        font-size: 11px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>اختبار أسلوب القيادة</h1>
+        <p>نموذج بليك وموتون</p>
+
+        <div class="logo">INH</div>
+
+        <p>22 سبتمبر 2026</p>
+    </div>
+
+
+    <div class="card info">
+
+        <h2>📋 طريقة الاختبار</h2>
+
+        <p>
+            اقرأ كل عبارة واختر الإجابة التي تعبر عنك أكثر.
+        </p>
+
+        <p>
+            <strong>0</strong> = أبداً
+            <br>
+            <strong>1</strong> = نادراً
+            <br>
+            <strong>2</strong> = أحياناً
+            <br>
+            <strong>3</strong> = غالباً
+            <br>
+            <strong>4</strong> = كثيراً
+            <br>
+            <strong>5</strong> = دائماً
+        </p>
+
+        <p>
+            لا توجد إجابة صحيحة أو خاطئة.
+        </p>
+
+    </div>
+
+
+    <div id="quiz"></div>
+
+
+    <div class="card">
+
+        <button class="main-button" onclick="calculate()">
+            احسب النتيجة
+        </button>
+
+    </div>
+
+
+    <div id="result" class="card">
+
+        <h2 class="result-title">🎯 النتيجة</h2>
+
+        <div class="scores">
+
+            <div class="score">
+                الاهتمام بالمهام
+                <span id="task"></span>
+                / 9
+            </div>
+
+            <div class="score">
+                الاهتمام بالأفراد
+                <span id="people"></span>
+                / 9
+            </div>
+
+        </div>
+
+
+        <div class="style" id="style"></div>
+
+
+        <div class="grid">
+
+            <div class="grid-label team">
+                Team Leader
+            </div>
+
+            <div class="grid-label country">
+                Country Club
+            </div>
+
+            <div class="grid-label authoritarian">
+                Authoritarian
+            </div>
+
+            <div class="grid-label impoverished">
+                Impoverished
+            </div>
+
+            <div class="dot" id="dot"></div>
+
+            <div class="x-axis">
+                الاهتمام بالمهام →
+            </div>
+
+            <div class="y-axis">
+                الاهتمام بالأفراد
+            </div>
+
+        </div>
+
+
+        <div class="description" id="description"></div>
+
+
+        <button class="main-button" onclick="location.reload()">
+            إعادة الاختبار
+        </button>
+
+    </div>
+
+
+    <div class="footer">
+        INH • 22/09/2026
+        <br>
+        اختبار حول نموذج بليك وموتون للقيادة
+    </div>
+
+</div>
+
+
+<script>
+
+const questions = [
+
+["أشجع أعضاء فريقي على المشاركة عند اتخاذ القرارات، وأحاول تطبيق أفكارهم واقتراحاتهم.", "people"],
+
+["لا شيء أهم من تحقيق الهدف أو إنجاز المهمة.", "task"],
+
+["أراقب الجدول الزمني بعناية للتأكد من أن المهمة أو المشروع سينتهي في الوقت المحدد.", "task"],
+
+["أستمتع بتدريب الأشخاص ومساعدتهم على تعلم مهام وإجراءات جديدة.", "people"],
+
+["كلما كانت المهمة أكثر صعوبة، كلما استمتعت بها أكثر.", "task"],
+
+["أشجع العاملين معي على الإبداع في عملهم.", "people"],
+
+["عند تنفيذ مهمة معقدة حتى النهاية، أتأكد من أخذ كل التفاصيل بعين الاعتبار.", "task"],
+
+["أجد أنه من السهل إنجاز عدة مهام معقدة في الوقت نفسه.", "task"],
+
+["أستمتع بقراءة المقالات والكتب والمجلات حول التدريب والقيادة وعلم النفس، ثم تطبيق ما تعلمته.", "people"],
+
+["عندما أصحح الأخطاء، لا أقلق من احتمال التأثير على علاقاتي مع الآخرين.", "people"],
+
+["أدير وقتي بكفاءة كبيرة.", "task"],
+
+["أستمتع بشرح الجوانب المعقدة والتفاصيل المتعلقة بمهمة أو مشروع للعاملين معي.", "task"],
+
+["تقسيم المشاريع الكبيرة إلى مهام صغيرة وسهلة الإدارة أمر طبيعي بالنسبة لي.", "task"],
+
+["لا شيء أهم من بناء فريق قوي ومتعاون.", "people"],
+
+["أستمتع بتحليل المشاكل.", "task"],
+
+["أحترم الحدود الشخصية للآخرين.", "people"],
+
+["تقديم النصائح للعاملين معي من أجل تحسين أدائهم أو سلوكهم أمر طبيعي بالنسبة لي.", "people"],
+
+["أستمتع بقراءة المقالات والكتب والمجلات المتخصصة في مهنتي، ثم تطبيق الإجراءات الجديدة التي تعلمتها.", "task"]
+
+];
+
+
+const quiz = document.getElementById("quiz");
+
+const labels = [
+"أبداً",
+"نادراً",
+"أحياناً",
+"غالباً",
+"كثيراً",
+"دائماً"
+];
+
+
+questions.forEach((q, i) => {
+
+    let html = `
+    <div class="card question">
+
+        <h3>
+            ${i + 1}. ${q[0]}
+        </h3>
+    `;
+
+    labels.forEach((label, value) => {
+
+        html += `
+        <label class="answer">
+
+            <input
+                type="radio"
+                name="q${i}"
+                value="${value}"
+            >
+
+            ${value} — ${label}
+
+        </label>
+        `;
+
+    });
+
+    html += `</div>`;
+
+    quiz.innerHTML += html;
+
+});
+
+
+function calculate() {
+
+    let taskTotal = 0;
+    let peopleTotal = 0;
+
+
+    for(let i = 0; i < questions.length; i++) {
+
+        const answer = document.querySelector(
+            `input[name="q${i}"]:checked`
+        );
+
+
+        if(!answer) {
+
+            alert(
+                "⚠️ خاصك تجاوب على جميع الأسئلة قبل حساب النتيجة."
+            );
+
+            document.querySelectorAll(".question")[i]
+            .scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+            return;
+        }
+
+
+        const value = Number(answer.value);
+
+
+        if(questions[i][1] === "task") {
+
+            taskTotal += value;
+
+        } else {
+
+            peopleTotal += value;
+
+        }
+
+    }
+
+
+    const taskScore = taskTotal * 0.2;
+    const peopleScore = peopleTotal * 0.2;
+
+
+    document.getElementById("task").textContent =
+        taskScore.toFixed(1);
+
+
+    document.getElementById("people").textContent =
+        peopleScore.toFixed(1);
+
+
+    let style;
+    let description;
+
+
+    if(taskScore >= 5 && peopleScore >= 5) {
+
+        style = "Team Leader — قائد الفريق";
+
+        description = `
+        <h3>🤝 قائد الفريق</h3>
+
+        <p>
+        يهتم هذا الأسلوب بالمهام والنتائج،
+        وفي نفس الوقت يعطي أهمية كبيرة للأفراد والعلاقات داخل الفريق.
+        </p>
+
+        <p>
+        الهدف هو تحقيق نتائج جيدة مع المحافظة على التعاون
+        والتواصل والعمل الجماعي.
+        </p>
+        `;
+
+    }
+
+    else if(taskScore >= 5 && peopleScore < 5) {
+
+        style = "Authoritarian Leader — القائد السلطوي";
+
+        description = `
+        <h3>🎯 القائد السلطوي</h3>
+
+        <p>
+        يركز هذا الأسلوب بدرجة أكبر على المهام والأهداف والنتائج.
+        </p>
+
+        <p>
+        تكون الأولوية لإنجاز العمل وتحقيق الأهداف المحددة.
+        </p>
+        `;
+
+    }
+
+    else if(taskScore < 5 && peopleScore >= 5) {
+
+        style = "Country Club Leader — قائد النادي الاجتماعي";
+
+        description = `
+        <h3>😊 قائد النادي الاجتماعي</h3>
+
+        <p>
+        يعطي هذا الأسلوب أهمية أكبر للأفراد والعلاقات داخل الفريق.
+        </p>
+
+        <p>
+        يهتم القائد بخلق جو مريح وداعم والمحافظة على علاقات جيدة.
+        </p>
+        `;
+
+    }
+
+    else {
+
+        style = "Impoverished Leader — القائد غير المتدخل";
+
+        description = `
+        <h3>⚪ القائد غير المتدخل</h3>
+
+        <p>
+        يكون الاهتمام بالمهام والأفراد منخفضاً نسبياً.
+        </p>
+
+        <p>
+        يميل هذا الأسلوب إلى الحد الأدنى من التدخل في العمل
+        والعلاقات داخل الفريق.
+        </p>
+        `;
+
+    }
+
+
+    document.getElementById("style").textContent = style;
+
+    document.getElementById("description").innerHTML = description;
+
+
+    const dot = document.getElementById("dot");
+
+    dot.style.left =
+        (taskScore / 9 * 100) + "%";
+
+    dot.style.bottom =
+        (peopleScore / 9 * 100) + "%";
+
+
+    document.getElementById("result").style.display = "block";
+
+
+    document.getElementById("result").scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+</script>
+
+</body>
+</html>
