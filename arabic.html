@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>اختبار أسلوب القيادة | INH</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: #111116;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 30px 15px;
+}
+
+.container {
+    width: 100%;
+    max-width: 850px;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #a78bfa;
+    letter-spacing: 2px;
+}
+
+.date {
+    color: #aaa;
+    font-size: 14px;
+}
+
+/* Card */
+.card {
+    background: #1b1b22;
+    border: 1px solid #30303a;
+    border-radius: 22px;
+    padding: 35px;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.35);
+}
+
+.intro {
+    text-align: center;
+    padding: 20px 10px 35px;
+}
+
+.badge {
+    display: inline-block;
+    background: #2b2344;
+    color: #bca7ff;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    color: #aaa;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+/* Progress */
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #30303a;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.progress {
+    height: 100%;
+    width: 5.5%;
+    background: #8b5cf6;
+    border-radius: 20px;
+    transition: width 0.3s ease;
+}
+
+/* Question */
+.question-number {
+    color: #a78bfa;
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.question {
+    font-size: 24px;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+/* Answers */
+.answers {
+    display: grid;
+    gap: 12px;
+}
+
+.answer {
+    background: #24242d;
+    border: 1px solid #383844;
+    border-radius: 14px;
+    padding: 17px 20px;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.answer:hover {
+    border-color: #8b5cf6;
+    background: #292633;
+}
+
+.answer.selected {
+    border-color: #8b5cf6;
+    background: #30264b;
+}
+
+.radio {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #777;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.answer.selected .radio {
+    border-color: #a78bfa;
+    background: #8b5cf6;
+    box-shadow: inset 0 0 0 4px #30264b;
+}
+
+.answer-text {
+    font-size: 16px;
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+button {
+    border: none;
+    border-radius: 12px;
+    padding: 14px 25px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.next {
+    background: #8b5cf6;
+    color: white;
+    margin-right: auto;
+}
+
+.next:hover {
+    background: #7c3aed;
+}
+
+.back {
+    background: #30303a;
+    color: white;
+}
+
+.back:hover {
+    background: #41414d;
+}
+
+/* Result */
+.result {
+    display: none;
+}
+
+.result-title {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.result-subtitle {
+    text-align: center;
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+.scores {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.score-box {
+    background: #24242d;
+    border-radius: 16px;
+    padding: 22px;
+    text-align: center;
+    border: 1px solid #383844;
+}
+
+.score-label {
+    color: #aaa;
+    margin-bottom: 8px;
+}
+
+.score-number {
+    font-size: 38px;
+    font-weight: bold;
+    color: #a78bfa;
+}
+
+.style-box {
+    text-align: center;
+    background: #30264b;
+    border: 1px solid #6546a3;
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.style-box h2 {
+    color: #c4b5fd;
+    margin-bottom: 10px;
+}
+
+.style-description {
+    color: #ddd;
+    line-height: 1.8;
+}
+
+/* Graph */
+.graph-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.graph {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1 / 1;
+    margin: auto;
+    border-right: 2px solid #aaa;
+    border-bottom: 2px solid #aaa;
+    background:
+        linear-gradient(to right, transparent 49.7%, #383844 50%, transparent 50.3%),
+        linear-gradient(to bottom, transparent 49.7%, #383844 50%, transparent 50.3%);
+}
+
+.graph::before {
+    content: "الاهتمام بالأفراد";
+    position: absolute;
+    right: -95px;
+    top: 45%;
+    transform: rotate(90deg);
+    color: #aaa;
+    font-size: 13px;
+}
+
+.graph::after {
+    content: "الاهتمام بالمهام";
+    position: absolute;
+    bottom: -35px;
+    left: 40%;
+    color: #aaa;
+    font-size: 13px;
+}
+
+.point {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: #a78bfa;
+    border: 4px solid #fff;
+    border-radius: 50%;
+    transform: translate(50%, 50%);
+    box-shadow: 0 0 15px rgba(139,92,246,0.7);
+}
+
+.axis-label {
+    position: absolute;
+    color: #777;
+    font-size: 12px;
+}
+
+.one-x {
+    bottom: -20px;
+    left: -5px;
+}
+
+.nine-x {
+    bottom: -20px;
+    right: -5px;
+}
+
+.one-y {
+    left: -25px;
+    bottom: -5px;
+}
+
+.nine-y {
+    left: -25px;
+    top: -5px;
+}
+
+.restart {
+    display: block;
+    margin: 35px auto 0;
+    background: #8b5cf6;
+    color: white;
+}
+
+.restart:hover {
+    background: #7c3aed;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    color: #666;
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .card {
+        padding: 22px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .question {
+        font-size: 20px;
+    }
+
+    .scores {
+        grid-template-columns: 1fr;
+    }
+
+    .graph {
+        width: 85%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="logo">INH</div>
+        <div class="date">22 سبتمبر 2026</div>
+    </div>
+
+    <div class="card">
+
+        <!-- INTRO -->
+        <div id="intro" class="intro">
+            <div class="badge">نموذج بليك وموتون</div>
+
+            <h1>اختبار أسلوب القيادة</h1>
+
+            <p class="subtitle">
+                اكتشف أسلوبك في القيادة من خلال 18 سؤالاً
+                حول اهتمامك بالمهام واهتمامك بالأفراد.
+            </p>
+
+            <button class="next" onclick="startTest()">
+                ابدأ الاختبار
+            </button>
+        </div>
+
+
+        <!-- TEST -->
+        <div id="test" style="display:none;">
+
+            <div class="progress-info">
+                <span id="questionCounter">السؤال 1 من 18</span>
+                <span id="percent">6%</span>
+            </div>
+
+            <div class="progress-bar">
+                <div id="progress" class="progress"></div>
+            </div>
+
+            <div class="question-number" id="questionNumber">
+                السؤال 1
+            </div>
+
+            <div class="question" id="question">
+            </div>
+
+            <div class="answers" id="answers">
+            </div>
+
+            <div class="buttons">
+
+                <button
+                    id="backBtn"
+                    class="back"
+                    onclick="previousQuestion()"
+                    style="display:none;">
+                    السابق
+                </button>
+
+                <button
+                    id="nextBtn"
+                    class="next"
+                    onclick="nextQuestion()">
+                    التالي
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESULT -->
+        <div id="result" class="result">
+
+            <h1 class="result-title">
+                النتيجة
+            </h1>
+
+            <p class="result-subtitle">
+                نتائج اختبار القيادة وفق نموذج بليك وموتون
+            </p>
+
+            <div class="scores">
+
+                <div class="score-box">
+                    <div class="score-label">
+                        الاهتمام بالمهام
+                    </div>
+
+                    <div class="score-number" id="taskScore">
+                        0
+                    </div>
+                </div>
+
+                <div class="score-box">
+                    <div class="score-label">
+                        الاهتمام بالأفراد
+                    </div>
+
+                    <div class="score-number" id="peopleScore">
+                        0
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="style-box">
+
+                <h2 id="styleName">
+                </h2>
+
+                <p class="style-description" id="styleDescription">
+                </p>
+
+            </div>
+
+
+            <h2 class="graph-title">
+                موقعك على شبكة بليك وموتون
+            </h2>
+
+            <div class="graph">
+
+                <span class="axis-label one-x">1</span>
+                <span class="axis-label nine-x">9</span>
+
+                <span class="axis-label one-y">1</span>
+                <span class="axis-label nine-y">9</span>
+
+                <div id="point" class="point"></div>
+
+            </div>
+
+
+            <button class="restart" onclick="restartTest()">
+                إعادة الاختبار
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        Blake & Mouton Leadership Assessment — INH
+    </div>
+
+</div>
+
+
+<script>
+
+const questions = [
+
+{
+text: "أشجع أعضاء فريقي على المشاركة عندما يتعلق الأمر باتخاذ القرارات، وأحاول تطبيق أفكارهم واقتراحاتهم.",
+type: "people"
+},
+
+{
+text: "لا شيء أهم من تحقيق الهدف أو إنجاز المهمة.",
+type: "task"
+},
+
+{
+text: "أراقب الجدول الزمني بعناية للتأكد من إنجاز المهمة أو المشروع في الوقت المحدد.",
+type: "task"
+},
+
+{
+text: "أستمتع بتدريب الأشخاص ومساعدتهم على تعلم مهام وإجراءات جديدة.",
+type: "people"
+},
+
+{
+text: "كلما كانت المهمة أكثر تحدياً، زاد استمتاعي بها.",
+type: "task"
+},
+
+{
+text: "أشجع موظفيّ على الإبداع في عملهم.",
+type: "people"
+},
+
+{
+text: "عندما أتابع مهمة معقدة حتى إتمامها، أتأكد من أخذ كل التفاصيل بعين الاعتبار.",
+type: "task"
+},
+
+{
+text: "أجد أنه من السهل إنجاز عدة مهام معقدة في الوقت نفسه.",
+type: "task"
+},
+
+{
+text: "أستمتع بقراءة المقالات والكتب والمجلات حول التدريب والقيادة وعلم النفس، ثم أطبق ما تعلمته.",
+type: "people"
+},
+
+{
+text: "عندما أصحح الأخطاء، لا أقلق من احتمال التأثير على علاقاتي مع الآخرين.",
+type: "people"
+},
+
+{
+text: "أدير وقتي بكفاءة عالية جداً.",
+type: "task"
+},
+
+{
+text: "أستمتع بشرح الجوانب المعقدة والتفاصيل الخاصة بمهمة أو مشروع لموظفيّ.",
+type: "task"
+},
+
+{
+text: "تقسيم المشاريع الكبيرة إلى مهام صغيرة وسهلة الإدارة أمر طبيعي بالنسبة لي.",
+type: "task"
+},
+
+{
+text: "لا شيء أهم من بناء فريق قوي ومتعاون.",
+type: "people"
+},
+
+{
+text: "أستمتع بتحليل المشكلات.",
+type: "task"
+},
+
+{
+text: "أحترم الحدود الشخصية للآخرين.",
+type: "people"
+},
+
+{
+text: "تقديم النصح لموظفيّ من أجل تحسين أدائهم أو سلوكهم أمر طبيعي بالنسبة لي.",
+type: "people"
+},
+
+{
+text: "أستمتع بقراءة المقالات والكتب والمجلات المتخصصة في مهنتي، ثم أطبق الإجراءات الجديدة التي تعلمتها.",
+type: "task"
+}
+
+];
+
+
+const options = [
+"أبداً",
+"نادراً",
+"أحياناً",
+"غالباً",
+"غالباً جداً",
+"دائماً"
+];
+
+
+let currentQuestion = 0;
+
+let answers = new Array(questions.length).fill(null);
+
+
+function startTest() {
+
+    document.getElementById("intro").style.display = "none";
+
+    document.getElementById("test").style.display = "block";
+
+    showQuestion();
+
+}
+
+
+function showQuestion() {
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("questionNumber").textContent =
+        "السؤال " + (currentQuestion + 1);
+
+    document.getElementById("questionCounter").textContent =
+        "السؤال " + (currentQuestion + 1) + " من " + questions.length;
+
+    document.getElementById("question").textContent =
+        q.text;
+
+
+    const percent =
+        Math.round(((currentQuestion + 1) / questions.length) * 100);
+
+    document.getElementById("percent").textContent =
+        percent + "%";
+
+    document.getElementById("progress").style.width =
+        percent + "%";
+
+
+    const answersContainer =
+        document.getElementById("answers");
+
+    answersContainer.innerHTML = "";
+
+
+    options.forEach((option, index) => {
+
+        const div = document.createElement("div");
+
+        div.className = "answer";
+
+        if (answers[currentQuestion] === index) {
+            div.classList.add("selected");
+        }
+
+        div.innerHTML = `
+            <div class="radio"></div>
+            <div class="answer-text">${option}</div>
+        `;
+
+
+        div.onclick = function() {
+
+            answers[currentQuestion] = index;
+
+            document
+                .querySelectorAll(".answer")
+                .forEach(a => a.classList.remove("selected"));
+
+            div.classList.add("selected");
+
+        };
+
+
+        answersContainer.appendChild(div);
+
+    });
+
+
+    document.getElementById("backBtn").style.display =
+        currentQuestion === 0 ? "none" : "block";
+
+
+    document.getElementById("nextBtn").textContent =
+        currentQuestion === questions.length - 1
+        ? "عرض النتيجة"
+        : "التالي";
+
+}
+
+
+function nextQuestion() {
+
+    if (answers[currentQuestion] === null) {
+
+        alert("المرجو اختيار إجابة قبل المتابعة.");
+
+        return;
+
+    }
+
+
+    if (currentQuestion < questions.length - 1) {
+
+        currentQuestion++;
+
+        showQuestion();
+
+    } else {
+
+        calculateResult();
+
+    }
+
+}
+
+
+function previousQuestion() {
+
+    if (currentQuestion > 0) {
+
+        currentQuestion--;
+
+        showQuestion();
+
+    }
+
+}
+
+
+function calculateResult() {
+
+    let taskTotal = 0;
+    let peopleTotal = 0;
+
+
+    questions.forEach((question, index) => {
+
+        const value = answers[index];
+
+        if (question.type === "task") {
+
+            taskTotal += value;
+
+        } else {
+
+            peopleTotal += value;
+
+        }
+
+    });
+
+
+    /*
+      كل محور يحتوي على 9 أسئلة.
+      المجموع الأقصى = 45.
+      نضرب في 0.2 للحصول على نتيجة من 0 إلى 9.
+    */
+
+    const taskScore = taskTotal * 0.2;
+    const peopleScore = peopleTotal * 0.2;
+
+
+    document.getElementById("taskScore").textContent =
+        taskScore.toFixed(1);
+
+    document.getElementById("peopleScore").textContent =
+        peopleScore.toFixed(1);
+
+
+    let styleName;
+    let description;
+
+
+    /*
+      تصنيف مبسط حسب المحورين:
+      5 أو أكثر = اهتمام مرتفع
+      أقل من 5 = اهتمام منخفض
+    */
+
+    if (taskScore >= 5 && peopleScore >= 5) {
+
+        styleName = "القائد الجماعي (Team Leader)";
+
+        description =
+        "يظهر اهتماماً مرتفعاً بالمهام وبالأفراد، مع التركيز على تحقيق الأهداف والعمل مع الفريق.";
+
+    }
+
+    else if (taskScore >= 5 && peopleScore < 5) {
+
+        styleName = "القائد الموجّه نحو المهام (Authoritarian)";
+
+        description =
+        "يركز بشكل أكبر على إنجاز المهام وتحقيق الأهداف والنتائج.";
+
+    }
+
+    else if (taskScore < 5 && peopleScore >= 5) {
+
+        styleName = "قائد نادي العلاقات (Country Club)";
+
+        description =
+        "يركز بشكل أكبر على العلاقات وراحة أفراد الفريق والانسجام داخل المجموعة.";
+
+    }
+
+    else {
+
+        styleName = "القائد المنعزل (Impoverished)";
+
+        description =
+        "يظهر اهتماماً منخفضاً نسبياً بالمهام وبالأفراد.";
+
+    }
+
+
+    document.getElementById("styleName").textContent =
+        styleName;
+
+    document.getElementById("styleDescription").textContent =
+        description;
+
+
+    /*
+      وضع النقطة في الرسم.
+
+      X = المهام
+      Y = الأفراد
+
+      النتيجة من 0 إلى 9.
+    */
+
+    const point = document.getElementById("point");
+
+    const x = (taskScore / 9) * 100;
+    const y = (peopleScore / 9) * 100;
+
+
+    point.style.left = x + "%";
+    point.style.bottom = y + "%";
+
+
+    document.getElementById("test").style.display =
+        "none";
+
+    document.getElementById("result").style.display =
+        "block";
+
+}
+
+
+function restartTest() {
+
+    currentQuestion = 0;
+
+    answers = new Array(questions.length).fill(null);
+
+    document.getElementById("result").style.display =
+        "none";
+
+    document.getElementById("test").style.display =
+        "block";
+
+    showQuestion();
+
+}
+
+</script>
+
+</body>
+</html>
