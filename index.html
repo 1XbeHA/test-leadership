@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Test de Leadership - Blake & Mouton</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    color: #1e293b;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 30px 18px;
+}
+
+header {
+    text-align: center;
+    padding: 35px 20px;
+    background: white;
+    border-radius: 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+header h1 {
+    font-size: 30px;
+    color: #312e81;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.info {
+    background: #eef2ff;
+    border-left: 5px solid #6366f1;
+    padding: 18px;
+    border-radius: 12px;
+    margin-top: 20px;
+    text-align: left;
+    line-height: 1.6;
+}
+
+.question {
+    background: white;
+    padding: 22px;
+    margin-bottom: 18px;
+    border-radius: 16px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+}
+
+.question h3 {
+    font-size: 17px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+}
+
+.option input {
+    display: none;
+}
+
+.option label {
+    display: block;
+    text-align: center;
+    padding: 12px 5px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.option label:hover {
+    border-color: #6366f1;
+    background: #eef2ff;
+}
+
+.option input:checked + label {
+    background: #6366f1;
+    color: white;
+    border-color: #6366f1;
+}
+
+.legend {
+    display: flex;
+    justify-content: space-between;
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+button {
+    border: none;
+    background: #4f46e5;
+    color: white;
+    padding: 15px 28px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+    margin: 30px auto;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #3730a3;
+    transform: translateY(-2px);
+}
+
+.error {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: none;
+    text-align: center;
+}
+
+#result {
+    display: none;
+}
+
+.result-card {
+    background: white;
+    padding: 30px;
+    border-radius: 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.result-card h2 {
+    color: #312e81;
+    margin-bottom: 20px;
+}
+
+.scores {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.score {
+    background: #f1f5f9;
+    padding: 18px 30px;
+    border-radius: 15px;
+    min-width: 180px;
+}
+
+.score strong {
+    display: block;
+    font-size: 30px;
+    color: #4f46e5;
+    margin-top: 5px;
+}
+
+.style-name {
+    font-size: 27px;
+    font-weight: bold;
+    color: #4f46e5;
+    margin: 20px 0 10px;
+}
+
+.description {
+    color: #475569;
+    line-height: 1.7;
+    max-width: 650px;
+    margin: auto;
+}
+
+/* GRAPH */
+.graph-container {
+    margin: 35px auto;
+    max-width: 650px;
+}
+
+.graph {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 520px;
+    margin: auto;
+    border-left: 3px solid #334155;
+    border-bottom: 3px solid #334155;
+    background:
+        linear-gradient(to right, transparent 49.5%, #cbd5e1 49.5%, #cbd5e1 50.5%, transparent 50.5%),
+        linear-gradient(to top, transparent 49.5%, #cbd5e1 49.5%, #cbd5e1 50.5%, transparent 50.5%),
+        repeating-linear-gradient(to right, transparent 0, transparent calc(11.11% - 1px), #e2e8f0 calc(11.11% - 1px), #e2e8f0 11.11%),
+        repeating-linear-gradient(to top, transparent 0, transparent calc(11.11% - 1px), #e2e8f0 calc(11.11% - 1px), #e2e8f0 11.11%);
+}
+
+.quadrant {
+    position: absolute;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center;
+    color: #475569;
+    line-height: 1.4;
+}
+
+.q1 {
+    left: 5%;
+    top: 8%;
+    width: 40%;
+}
+
+.q2 {
+    right: 5%;
+    top: 8%;
+    width: 40%;
+    color: #312e81;
+}
+
+.q3 {
+    left: 5%;
+    bottom: 8%;
+    width: 40%;
+}
+
+.q4 {
+    right: 5%;
+    bottom: 8%;
+    width: 40%;
+}
+
+.axis-x {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.axis-y {
+    position: absolute;
+    left: -45px;
+    top: 45%;
+    transform: rotate(-90deg);
+    font-weight: bold;
+}
+
+.point {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: #ef4444;
+    border: 4px solid white;
+    border-radius: 50%;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+    transform: translate(-50%, 50%);
+    z-index: 10;
+}
+
+.point-label {
+    position: absolute;
+    background: #1e293b;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 7px;
+    font-size: 12px;
+    transform: translate(-50%, -120%);
+    white-space: nowrap;
+    z-index: 11;
+}
+
+.scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #64748b;
+    margin-left: -5px;
+}
+
+.note {
+    margin-top: 25px;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 12px;
+    margin-top: 30px;
+}
+
+@media(max-width: 600px) {
+    header h1 {
+        font-size: 24px;
+    }
+
+    .options {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .score {
+        width: 100%;
+    }
+
+    .graph {
+        width: 90%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>Test de Leadership</h1>
+    <p>Modèle de Blake & Mouton</p>
+
+    <div class="info">
+        <strong>Instructions :</strong><br>
+        Pour chaque affirmation, choisissez une seule réponse selon la fréquence
+        à laquelle elle correspond à votre comportement.
+        <br><br>
+        <strong>0 = Jamais</strong> ·
+        <strong>1 = Rarement</strong> ·
+        <strong>2 = Parfois</strong> ·
+        <strong>3 = Souvent</strong> ·
+        <strong>4 = Très souvent</strong> ·
+        <strong>5 = Toujours</strong>
+    </div>
+</header>
+
+<div id="error" class="error">
+    Veuillez répondre à toutes les questions avant de voir votre résultat.
+</div>
+
+<form id="quiz">
+
+<div class="question">
+<h3>1. J’encourage les membres de mon équipe à participer lorsqu’il faut prendre des décisions, et j’essaie de mettre en œuvre leurs idées et leurs suggestions.</h3>
+<div class="options" data-q="1"></div>
+</div>
+
+<div class="question">
+<h3>2. Rien n’est plus important que d’atteindre un objectif ou d’accomplir une tâche.</h3>
+<div class="options" data-q="2"></div>
+</div>
+
+<div class="question">
+<h3>3. Je surveille attentivement le calendrier afin de m’assurer qu’une tâche ou un projet sera terminé dans les délais.</h3>
+<div class="options" data-q="3"></div>
+</div>
+
+<div class="question">
+<h3>4. J’aime accompagner et former les personnes lorsqu’elles doivent apprendre de nouvelles tâches ou de nouvelles procédures.</h3>
+<div class="options" data-q="4"></div>
+</div>
+
+<div class="question">
+<h3>5. Plus une tâche est difficile, plus elle me plaît.</h3>
+<div class="options" data-q="5"></div>
+</div>
+
+<div class="question">
+<h3>6. J’encourage mes collaborateurs à faire preuve de créativité dans leur travail.</h3>
+<div class="options" data-q="6"></div>
+</div>
+
+<div class="question">
+<h3>7. Lorsque je mène une tâche complexe jusqu’à son terme, je veille à ce que chaque détail soit pris en compte.</h3>
+<div class="options" data-q="7"></div>
+</div>
+
+<div class="question">
+<h3>8. Je trouve facile de réaliser plusieurs tâches complexes en même temps.</h3>
+<div class="options" data-q="8"></div>
+</div>
+
+<div class="question">
+<h3>9. J’aime lire des articles, des livres et des revues spécialisées sur la formation, le leadership et la psychologie, puis mettre en pratique ce que j’ai appris.</h3>
+<div class="options" data-q="9"></div>
+</div>
+
+<div class="question">
+<h3>10. Lorsque je corrige des erreurs, je ne m’inquiète pas de risquer de détériorer mes relations avec les autres.</h3>
+<div class="options" data-q="10"></div>
+</div>
+
+<div class="question">
+<h3>11. Je gère mon temps de manière très efficace.</h3>
+<div class="options" data-q="11"></div>
+</div>
+
+<div class="question">
+<h3>12. J’aime expliquer à mes collaborateurs les aspects complexes et les détails d’une tâche ou d’un projet.</h3>
+<div class="options" data-q="12"></div>
+</div>
+
+<div class="question">
+<h3>13. Décomposer les grands projets en petites tâches faciles à gérer est naturel pour moi.</h3>
+<div class="options" data-q="13"></div>
+</div>
+
+<div class="question">
+<h3>14. Rien n’est plus important que de construire une équipe performante et soudée.</h3>
+<div class="options" data-q="14"></div>
+</div>
+
+<div class="question">
+<h3>15. J’aime analyser les problèmes.</h3>
+<div class="options" data-q="15"></div>
+</div>
+
+<div class="question">
+<h3>16. Je respecte les limites personnelles des autres.</h3>
+<div class="options" data-q="16"></div>
+</div>
+
+<div class="question">
+<h3>17. Conseiller mes collaborateurs afin d’améliorer leur performance ou leur comportement est naturel pour moi.</h3>
+<div class="options" data-q="17"></div>
+</div>
+
+<div class="question">
+<h3>18. J’aime lire des articles, des livres et des revues spécialisées sur ma profession, puis mettre en pratique les nouvelles procédures que j’ai apprises.</h3>
+<div class="options" data-q="18"></div>
+</div>
+
+<button type="button" onclick="calculate()">Voir mon résultat</button>
+
+</form>
+
+
+<section id="result">
+
+<div class="result-card">
+
+<h2>Votre résultat</h2>
+
+<div class="scores">
+
+<div class="score">
+    <span>Orientation vers les tâches</span>
+    <strong id="taskScore">0.0</strong>
+    <small>/ 9</small>
+</div>
+
+<div class="score">
+    <span>Orientation vers les personnes</span>
+    <strong id="peopleScore">0.0</strong>
+    <small>/ 9</small>
+</div>
+
+</div>
+
+<div class="style-name" id="styleName"></div>
+
+<p class="description" id="styleDescription"></p>
+
+
+<div class="graph-container">
+
+<h3 style="margin-bottom:20px;">Votre positionnement sur la grille</h3>
+
+<div class="graph" id="graph">
+
+<div class="quadrant q1">
+    Country Club<br>
+    <small>People élevé<br>Task faible</small>
+</div>
+
+<div class="quadrant q2">
+    Team Leader<br>
+    <small>People élevé<br>Task élevé</small>
+</div>
+
+<div class="quadrant q3">
+    Impoverished<br>
+    <small>People faible<br>Task faible</small>
+</div>
+
+<div class="quadrant q4">
+    Authoritarian<br>
+    <small>People faible<br>Task élevé</small>
+</div>
+
+<div class="point" id="point"></div>
+<div class="point-label" id="pointLabel"></div>
+
+</div>
+
+<div class="axis-x">Task / Production</div>
+
+<div class="scale">
+    <span>0</span>
+    <span>1</span>
+    <span>2</span>
+    <span>3</span>
+    <span>4</span>
+    <span>5</span>
+    <span>6</span>
+    <span>7</span>
+    <span>8</span>
+    <span>9</span>
+</div>
+
+</div>
+
+<div class="note">
+    <strong>À retenir :</strong>
+    ce test est un outil d’auto-évaluation. Il indique votre positionnement
+    selon les deux dimensions du modèle de Blake & Mouton :
+    l’orientation vers les tâches et l’orientation vers les personnes.
+</div>
+
+<button type="button" onclick="restart()">Refaire le test</button>
+
+</div>
+
+<footer>
+    Test adapté et traduit en français à partir du questionnaire
+    d’auto-évaluation de la grille de Blake & Mouton.
+</footer>
+
+</section>
+
+</div>
+
+
+<script>
+
+const peopleQuestions = [1,4,6,9,10,12,14,16,17];
+const taskQuestions = [2,3,5,7,8,11,13,15,18];
+
+const options = [
+    "0 — Jamais",
+    "1 — Rarement",
+    "2 — Parfois",
+    "3 — Souvent",
+    "4 — Très souvent",
+    "5 — Toujours"
+];
+
+document.querySelectorAll(".options").forEach(container => {
+
+    const q = container.dataset.q;
+
+    options.forEach((text, index) => {
+
+        const div = document.createElement("div");
+        div.className = "option";
+
+        div.innerHTML = `
+            <input type="radio" id="q${q}_${index}" name="q${q}" value="${index}">
+            <label for="q${q}_${index}">${index}</label>
+        `;
+
+        container.appendChild(div);
+
+    });
+
+    const legend = document.createElement("div");
+    legend.className = "legend";
+    legend.innerHTML = `
+        <span>Jamais</span>
+        <span>Toujours</span>
+    `;
+
+    container.parentElement.appendChild(legend);
+});
+
+
+function calculate() {
+
+    document.getElementById("error").style.display = "none";
+
+    let peopleTotal = 0;
+    let taskTotal = 0;
+
+    for(let i = 1; i <= 18; i++) {
+
+        const answer = document.querySelector(`input[name="q${i}"]:checked`);
+
+        if(!answer) {
+            document.getElementById("error").style.display = "block";
+            document.getElementById(`q${i}_0`).scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+            return;
+        }
+
+        const value = Number(answer.value);
+
+        if(peopleQuestions.includes(i)) {
+            peopleTotal += value;
+        }
+
+        if(taskQuestions.includes(i)) {
+            taskTotal += value;
+        }
+    }
+
+    const people = peopleTotal * 0.2;
+    const task = taskTotal * 0.2;
+
+    document.getElementById("peopleScore").textContent = people.toFixed(1);
+    document.getElementById("taskScore").textContent = task.toFixed(1);
+
+    let style = "";
+    let description = "";
+
+    /*
+       Lecture utilisée par le questionnaire :
+       1–4 = faible
+       5–9 = élevé
+    */
+
+    if(task >= 5 && people >= 5) {
+
+        style = "Team Leader";
+        description =
+        "Vous accordez une importance élevée aux tâches et aux personnes. " +
+        "Vous cherchez à atteindre les objectifs tout en favorisant la participation, " +
+        "la coopération et le développement de votre équipe.";
+
+    } else if(task >= 5 && people < 5) {
+
+        style = "Authoritarian Leader";
+        description =
+        "Votre orientation vers les tâches est élevée tandis que votre orientation " +
+        "vers les personnes est plus faible. Vous accordez une grande importance " +
+        "aux objectifs, aux délais et à l’organisation du travail.";
+
+    } else if(task < 5 && people >= 5) {
+
+        style = "Country Club Leader";
+        description =
+        "Votre orientation vers les personnes est élevée tandis que votre orientation " +
+        "vers les tâches est plus faible. Vous accordez beaucoup d’importance " +
+        "aux relations, au bien-être et à l’ambiance de l’équipe.";
+
+    } else {
+
+        style = "Impoverished Leader";
+        description =
+        "Votre orientation vers les tâches et vers les personnes est relativement faible. " +
+        "Cela peut indiquer une faible implication dans les objectifs comme dans les relations " +
+        "au sein de l’équipe.";
+    }
+
+    document.getElementById("styleName").textContent = style;
+    document.getElementById("styleDescription").textContent = description;
+
+    /* Position du point sur le graphique */
+    const point = document.getElementById("point");
+    const label = document.getElementById("pointLabel");
+
+    /*
+       x = Task
+       y = People
+    */
+
+    point.style.left = ((task / 9) * 100) + "%";
+    point.style.bottom = ((people / 9) * 100) + "%";
+
+    label.style.left = ((task / 9) * 100) + "%";
+    label.style.bottom = ((people / 9) * 100) + "%";
+
+    label.textContent =
+        "Task " + task.toFixed(1) +
+        " · People " + people.toFixed(1);
+
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("result").style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+function restart() {
+
+    document.getElementById("quiz").reset();
+
+    document.getElementById("result").style.display = "none";
+    document.getElementById("quiz").style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+</script>
+
+</body>
+</html>
