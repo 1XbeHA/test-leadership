@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leadership Assessment | INH</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f5f8;
+    color: #20232d;
+}
+
+/* HEADER */
+
+.header {
+    background: #171923;
+    color: white;
+    padding: 28px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.date {
+    font-size: 13px;
+    color: #c9cad1;
+}
+
+/* MAIN */
+
+.container {
+    width: 90%;
+    max-width: 850px;
+    margin: 45px auto;
+}
+
+/* INTRO */
+
+.intro {
+    margin-bottom: 30px;
+}
+
+.intro small {
+    color: #6c63ff;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.intro h1 {
+    font-size: 36px;
+    margin: 8px 0;
+}
+
+.intro p {
+    color: #666b78;
+    max-width: 650px;
+}
+
+/* CARD */
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.06);
+}
+
+/* INSTRUCTIONS */
+
+.instructions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.instruction-box {
+    background: #f7f7fa;
+    padding: 20px;
+    border-radius: 14px;
+}
+
+.instruction-box h3 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+.scale {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.scale span {
+    background: white;
+    border: 1px solid #dddfe6;
+    padding: 6px 11px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+/* PROGRESS */
+
+.progress-area {
+    margin-bottom: 25px;
+}
+
+.progress-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #777b87;
+}
+
+.progress {
+    width: 100%;
+    height: 8px;
+    background: #e7e8ed;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 5.55%;
+    background: #6c63ff;
+    transition: .3s;
+}
+
+/* QUESTION */
+
+.question-card {
+    min-height: 390px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.question-number {
+    color: #6c63ff;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.question-text {
+    font-size: 24px;
+    line-height: 1.5;
+    margin: 15px 0 30px;
+}
+
+/* ANSWERS */
+
+.answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.answer {
+    position: relative;
+}
+
+.answer input {
+    position: absolute;
+    opacity: 0;
+}
+
+.answer label {
+    display: block;
+    padding: 17px;
+    border: 1px solid #dddfe6;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: .2s;
+    background: white;
+}
+
+.answer label:hover {
+    border-color: #6c63ff;
+    background: #faf9ff;
+}
+
+.answer input:checked + label {
+    background: #6c63ff;
+    color: white;
+    border-color: #6c63ff;
+}
+
+.answer strong {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 3px;
+}
+
+/* BUTTONS */
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+button {
+    border: none;
+    border-radius: 11px;
+    padding: 14px 25px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.previous {
+    background: #ececf1;
+    color: #333640;
+}
+
+.next {
+    background: #171923;
+    color: white;
+    margin-left: auto;
+}
+
+.next:hover {
+    background: #6c63ff;
+}
+
+/* RESULT */
+
+#result {
+    display: none;
+}
+
+.result-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.result-header small {
+    color: #6c63ff;
+    font-weight: bold;
+}
+
+.result-header h2 {
+    font-size: 32px;
+    margin: 8px 0;
+}
+
+.scores {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.score-box {
+    background: #f7f7fa;
+    padding: 22px;
+    border-radius: 15px;
+}
+
+.score-title {
+    color: #777b87;
+    font-size: 13px;
+}
+
+.score-number {
+    font-size: 35px;
+    font-weight: 800;
+    margin-top: 5px;
+}
+
+/* STYLE */
+
+.result-style {
+    background: #171923;
+    color: white;
+    border-radius: 17px;
+    padding: 25px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.result-style small {
+    color: #b9bac3;
+}
+
+.result-style h3 {
+    font-size: 26px;
+    margin: 8px 0;
+}
+
+/* GRAPH */
+
+.graph-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.graph {
+    width: 390px;
+    height: 390px;
+    max-width: 90vw;
+    margin: 30px auto 55px;
+    position: relative;
+    border-left: 2px solid #222;
+    border-bottom: 2px solid #222;
+    background:
+        linear-gradient(
+            to right,
+            transparent 49.7%,
+            #ddd 49.7%,
+            #ddd 50.3%,
+            transparent 50.3%
+        ),
+        linear-gradient(
+            to top,
+            transparent 49.7%,
+            #ddd 49.7%,
+            #ddd 50.3%,
+            transparent 50.3%
+        );
+}
+
+.point {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #6c63ff;
+    border: 4px solid white;
+    box-shadow: 0 3px 12px rgba(108,99,255,.5);
+    transform: translate(-50%, 50%);
+    transition: .5s;
+}
+
+.graph-label {
+    position: absolute;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.tl {
+    top: 8px;
+    right: 8px;
+}
+
+.tr {
+    top: 8px;
+    left: 8px;
+}
+
+.bl {
+    bottom: 8px;
+    right: 8px;
+}
+
+.br {
+    bottom: 8px;
+    left: 8px;
+}
+
+.x-axis {
+    position: absolute;
+    bottom: -42px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.y-axis {
+    position: absolute;
+    right: -73px;
+    top: 50%;
+    transform: rotate(90deg);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* DESCRIPTION */
+
+.description {
+    background: #f7f7fa;
+    padding: 22px;
+    border-radius: 15px;
+    line-height: 1.7;
+}
+
+.restart {
+    width: 100%;
+    margin-top: 25px;
+    background: #6c63ff;
+    color: white;
+}
+
+.restart:hover {
+    background: #5148dc;
+}
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+    color: #8b8e99;
+    font-size: 12px;
+    margin: 30px 0;
+}
+
+/* MOBILE */
+
+@media(max-width:650px) {
+
+    .header {
+        padding: 22px 5%;
+    }
+
+    .intro h1 {
+        font-size: 28px;
+    }
+
+    .instructions {
+        grid-template-columns: 1fr;
+    }
+
+    .answers {
+        grid-template-columns: 1fr;
+    }
+
+    .question-text {
+        font-size: 20px;
+    }
+
+    .scores {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .graph {
+        width: 290px;
+        height: 290px;
+    }
+
+    .y-axis {
+        right: -60px;
+        font-size: 11px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<header class="header">
+
+    <div class="brand">
+        INH
+    </div>
+
+    <div class="date">
+        22/09/2026
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <section id="quizPage">
+
+        <div class="intro">
+
+            <small>LEADERSHIP ASSESSMENT</small>
+
+            <h1>
+                Quel est votre style de leadership ?
+            </h1>
+
+            <p>
+                Découvrez votre positionnement selon la grille
+                managériale de Blake et Mouton.
+            </p>
+
+        </div>
+
+
+        <div class="instructions">
+
+            <div class="instruction-box">
+
+                <h3>Comment répondre ?</h3>
+
+                <p>
+                    Pour chaque affirmation, choisissez
+                    une seule réponse selon ce qui vous correspond.
+                </p>
+
+            </div>
+
+
+            <div class="instruction-box">
+
+                <h3>Échelle</h3>
+
+                <div class="scale">
+
+                    <span>0 — Jamais</span>
+                    <span>1 — Rarement</span>
+                    <span>2 — Parfois</span>
+                    <span>3 — Souvent</span>
+                    <span>4 — Très souvent</span>
+                    <span>5 — Toujours</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-area">
+
+            <div class="progress-top">
+
+                <span id="questionCounter">
+                    Question 1 sur 18
+                </span>
+
+                <span id="percentage">
+                    6%
+                </span>
+
+            </div>
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar"
+                    id="progressBar">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card question-card">
+
+            <div>
+
+                <div
+                    class="question-number"
+                    id="questionNumber">
+                    QUESTION 01
+                </div>
+
+                <div
+                    class="question-text"
+                    id="questionText">
+                </div>
+
+                <div
+                    class="answers"
+                    id="answers">
+                </div>
+
+            </div>
+
+
+            <div class="buttons">
+
+                <button
+                    class="previous"
+                    id="previousBtn"
+                    onclick="previousQuestion()">
+                    ← Précédent
+                </button>
+
+                <button
+                    class="next"
+                    id="nextBtn"
+                    onclick="nextQuestion()">
+                    Suivant →
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section id="result">
+
+        <div class="result-header">
+
+            <small>YOUR RESULT</small>
+
+            <h2>
+                Votre profil de leadership
+            </h2>
+
+            <p>
+                Voici votre positionnement sur les deux dimensions
+                de la grille de Blake et Mouton.
+            </p>
+
+        </div>
+
+
+        <div class="scores">
+
+            <div class="score-box">
+
+                <div class="score-title">
+                    Préoccupation pour la tâche
+                </div>
+
+                <div
+                    class="score-number"
+                    id="taskScore">
+                    0
+                </div>
+
+                <small>/ 9</small>
+
+            </div>
+
+
+            <div class="score-box">
+
+                <div class="score-title">
+                    Préoccupation pour les personnes
+                </div>
+
+                <div
+                    class="score-number"
+                    id="peopleScore">
+                    0
+                </div>
+
+                <small>/ 9</small>
+
+            </div>
+
+        </div>
+
+
+        <div class="result-style">
+
+            <small>STYLE IDENTIFIÉ</small>
+
+            <h3 id="styleName"></h3>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="graph-title">
+
+                <h3>
+                    Votre positionnement
+                </h3>
+
+                <p>
+                    Grille de Blake et Mouton
+                </p>
+
+            </div>
+
+
+            <div class="graph">
+
+                <div class="graph-label tl">
+                    Team Leader
+                </div>
+
+                <div class="graph-label tr">
+                    Country Club
+                </div>
+
+                <div class="graph-label bl">
+                    Authoritarian
+                </div>
+
+                <div class="graph-label br">
+                    Impoverished
+                </div>
+
+
+                <div
+                    class="point"
+                    id="point">
+                </div>
+
+
+                <div class="x-axis">
+                    Préoccupation pour la tâche →
+                </div>
+
+                <div class="y-axis">
+                    Préoccupation pour les personnes
+                </div>
+
+            </div>
+
+
+            <div
+                class="description"
+                id="description">
+            </div>
+
+        </div>
+
+
+        <button
+            class="restart"
+            onclick="restart()">
+            Refaire le test
+        </button>
+
+    </section>
+
+
+    <footer>
+        INH • 22/09/2026
+    </footer>
+
+</main>
+
+
+<script>
+
+const questions = [
+
+{
+text: "J’encourage les membres de mon équipe à participer lorsqu’il faut prendre des décisions, et j’essaie de mettre en œuvre leurs idées et leurs suggestions.",
+type: "people"
+},
+
+{
+text: "Rien n’est plus important que d’atteindre un objectif ou d’accomplir une tâche.",
+type: "task"
+},
+
+{
+text: "Je surveille attentivement le calendrier afin de m’assurer qu’une tâche ou un projet sera terminé dans les délais.",
+type: "task"
+},
+
+{
+text: "J’aime accompagner et former les personnes lorsqu’elles doivent apprendre de nouvelles tâches ou de nouvelles procédures.",
+type: "people"
+},
+
+{
+text: "Plus une tâche est difficile, plus elle me plaît.",
+type: "task"
+},
+
+{
+text: "J’encourage mes collaborateurs à faire preuve de créativité dans leur travail.",
+type: "people"
+},
+
+{
+text: "Lorsque je mène une tâche complexe jusqu’à son terme, je veille à ce que chaque détail soit pris en compte.",
+type: "task"
+},
+
+{
+text: "Je trouve facile de réaliser plusieurs tâches complexes en même temps.",
+type: "task"
+},
+
+{
+text: "J’aime lire des articles, des livres et des revues spécialisées sur la formation, le leadership et la psychologie, puis mettre en pratique ce que j’ai appris.",
+type: "people"
+},
+
+{
+text: "Lorsque je corrige des erreurs, je ne m’inquiète pas de risquer de détériorer mes relations avec les autres.",
+type: "people"
+},
+
+{
+text: "Je gère mon temps de manière très efficace.",
+type: "task"
+},
+
+{
+text: "J’aime expliquer à mes collaborateurs les aspects complexes et les détails d’une tâche ou d’un projet.",
+type: "task"
+},
+
+{
+text: "Décomposer les grands projets en petites tâches faciles à gérer est naturel pour moi.",
+type: "task"
+},
+
+{
+text: "Rien n’est plus important que de construire une équipe performante et soudée.",
+type: "people"
+},
+
+{
+text: "J’aime analyser les problèmes.",
+type: "task"
+},
+
+{
+text: "Je respecte les limites personnelles des autres.",
+type: "people"
+},
+
+{
+text: "Conseiller mes collaborateurs afin d’améliorer leur performance ou leur comportement est naturel pour moi.",
+type: "people"
+},
+
+{
+text: "J’aime lire des articles, des livres et des revues spécialisées sur ma profession, puis mettre en pratique les nouvelles procédures que j’ai apprises.",
+type: "task"
+}
+
+];
+
+
+let currentQuestion = 0;
+
+let answers = new Array(questions.length).fill(null);
+
+
+const labels = [
+"Jamais",
+"Rarement",
+"Parfois",
+"Souvent",
+"Très souvent",
+"Toujours"
+];
+
+
+function showQuestion() {
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("questionNumber").textContent =
+        "QUESTION " +
+        String(currentQuestion + 1).padStart(2, "0");
+
+
+    document.getElementById("questionText").textContent =
+        q.text;
+
+
+    document.getElementById("questionCounter").textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " sur " +
+        questions.length;
+
+
+    const percentage =
+        Math.round(
+            ((currentQuestion + 1) / questions.length) * 100
+        );
+
+
+    document.getElementById("percentage").textContent =
+        percentage + "%";
+
+
+    document.getElementById("progressBar").style.width =
+        percentage + "%";
+
+
+    const answersDiv =
+        document.getElementById("answers");
+
+
+    answersDiv.innerHTML = "";
+
+
+    labels.forEach((label, value) => {
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className = "answer";
+
+
+        const input =
+            document.createElement("input");
+
+        input.type = "radio";
+
+        input.name = "answer";
+
+        input.value = value;
+
+        input.id =
+            "answer" + value;
+
+
+        if(answers[currentQuestion] === value) {
+
+            input.checked = true;
+
+        }
+
+
+        input.onchange = function() {
+
+            answers[currentQuestion] = value;
+
+        };
+
+
+        const labelElement =
+            document.createElement("label");
+
+        labelElement.htmlFor =
+            "answer" + value;
+
+
+        labelElement.innerHTML =
+            `<strong>${value}</strong>${label}`;
+
+
+        wrapper.appendChild(input);
+
+        wrapper.appendChild(labelElement);
+
+        answersDiv.appendChild(wrapper);
+
+    });
+
+
+    document.getElementById("previousBtn").style.visibility =
+        currentQuestion === 0 ? "hidden" : "visible";
+
+
+    document.getElementById("nextBtn").textContent =
+        currentQuestion === questions.length - 1
+        ? "Voir mon résultat"
+        : "Suivant →";
+
+}
+
+
+function nextQuestion() {
+
+    if(answers[currentQuestion] === null) {
+
+        alert(
+            "Veuillez sélectionner une réponse."
+        );
+
+        return;
+
+    }
+
+
+    if(currentQuestion < questions.length - 1) {
+
+        currentQuestion++;
+
+        showQuestion();
+
+    } else {
+
+        calculateResult();
+
+    }
+
+}
+
+
+function previousQuestion() {
+
+    if(currentQuestion > 0) {
+
+        currentQuestion--;
+
+        showQuestion();
+
+    }
+
+}
+
+
+function calculateResult() {
+
+    let taskTotal = 0;
+
+    let peopleTotal = 0;
+
+
+    questions.forEach((q, i) => {
+
+        if(q.type === "task") {
+
+            taskTotal += answers[i];
+
+        } else {
+
+            peopleTotal += answers[i];
+
+        }
+
+    });
+
+
+    const taskScore =
+        taskTotal * 0.2;
+
+    const peopleScore =
+        peopleTotal * 0.2;
+
+
+    document.getElementById("taskScore").textContent =
+        taskScore.toFixed(1);
+
+
+    document.getElementById("peopleScore").textContent =
+        peopleScore.toFixed(1);
+
+
+    let style;
+
+    let description;
+
+
+    if(taskScore >= 5 && peopleScore >= 5) {
+
+        style =
+            "Team Leader";
+
+        description = `
+            <h3>Team Leader — Style d’équipe</h3>
+
+            <p>
+                Ce profil accorde une importance élevée
+                à la fois aux objectifs et aux personnes.
+            </p>
+
+            <p>
+                Il cherche à obtenir de bons résultats tout
+                en favorisant la coopération, la communication
+                et l’implication des membres de l’équipe.
+            </p>
+        `;
+
+    }
+
+    else if(taskScore >= 5 && peopleScore < 5) {
+
+        style =
+            "Authoritarian Leader";
+
+        description = `
+            <h3>Authoritarian Leader</h3>
+
+            <p>
+                Ce profil accorde une importance élevée
+                à l’accomplissement des tâches et aux résultats.
+            </p>
+
+            <p>
+                L’attention est principalement orientée
+                vers les objectifs, les délais et la performance.
+            </p>
+        `;
+
+    }
+
+    else if(taskScore < 5 && peopleScore >= 5) {
+
+        style =
+            "Country Club Leader";
+
+        description = `
+            <h3>Country Club Leader</h3>
+
+            <p>
+                Ce profil accorde une importance élevée
+                aux personnes et aux relations au sein du groupe.
+            </p>
+
+            <p>
+                L’accent est mis sur le climat de travail,
+                le soutien et les relations positives.
+            </p>
+        `;
+
+    }
+
+    else {
+
+        style =
+            "Impoverished Leader";
+
+        description = `
+            <h3>Impoverished Leader</h3>
+
+            <p>
+                Ce profil présente un faible niveau
+                d’attention à la fois pour les tâches
+                et pour les personnes.
+            </p>
+
+            <p>
+                L’implication du leader dans les objectifs
+                et dans les relations de l’équipe est limitée.
+            </p>
+        `;
+
+    }
+
+
+    document.getElementById("styleName").textContent =
+        style;
+
+
+    document.getElementById("description").innerHTML =
+        description;
+
+
+    const point =
+        document.getElementById("point");
+
+
+    point.style.left =
+        (taskScore / 9 * 100) + "%";
+
+
+    point.style.bottom =
+        (peopleScore / 9 * 100) + "%";
+
+
+    document.getElementById("quizPage").style.display =
+        "none";
+
+
+    document.getElementById("result").style.display =
+        "block";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+function restart() {
+
+    currentQuestion = 0;
+
+    answers =
+        new Array(questions.length).fill(null);
+
+
+    document.getElementById("result").style.display =
+        "none";
+
+
+    document.getElementById("quizPage").style.display =
+        "block";
+
+
+    showQuestion();
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+showQuestion();
+
+</script>
+
+</body>
+</html>
