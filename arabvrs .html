@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>اختبار القيادة - بليك وموتون</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: "Tahoma", "Arial", sans-serif;
+        background: #f1f5f9;
+        color: #1e293b;
+        line-height: 1.8;
+    }
+
+    header {
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+        color: white;
+        text-align: center;
+        padding: 45px 20px;
+        border-radius: 0 0 30px 30px;
+    }
+
+    header h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    header p {
+        font-size: 17px;
+        opacity: 0.95;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+
+    .intro {
+        background: white;
+        padding: 25px;
+        border-radius: 18px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    }
+
+    .intro h2 {
+        color: #4f46e5;
+        margin-bottom: 10px;
+    }
+
+    .question {
+        background: white;
+        padding: 25px;
+        margin-bottom: 20px;
+        border-radius: 18px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .question-number {
+        color: #4f46e5;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .question-text {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 18px;
+    }
+
+    .option {
+        display: block;
+        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 15px;
+        margin: 10px 0;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .option:hover {
+        border-color: #6366f1;
+        background: #eef2ff;
+    }
+
+    .option input {
+        margin-left: 10px;
+        accent-color: #4f46e5;
+    }
+
+    .submit-btn {
+        width: 100%;
+        border: none;
+        background: #4f46e5;
+        color: white;
+        padding: 16px;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 14px;
+        cursor: pointer;
+        margin: 20px 0 30px;
+        transition: 0.2s;
+    }
+
+    .submit-btn:hover {
+        background: #4338ca;
+        transform: translateY(-1px);
+    }
+
+    #result {
+        display: none;
+    }
+
+    .result-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .result-card h2 {
+        color: #4f46e5;
+        margin-bottom: 20px;
+    }
+
+    .scores {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        flex-wrap: wrap;
+        margin: 20px 0;
+    }
+
+    .score-box {
+        background: #f8fafc;
+        border-radius: 15px;
+        padding: 18px 30px;
+        min-width: 180px;
+    }
+
+    .score-box strong {
+        display: block;
+        font-size: 27px;
+        color: #4f46e5;
+    }
+
+    .style-name {
+        font-size: 25px;
+        font-weight: bold;
+        color: #4f46e5;
+        margin: 15px 0;
+    }
+
+    .graph-container {
+        background: white;
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.06);
+        margin-bottom: 25px;
+    }
+
+    .graph-title {
+        text-align: center;
+        color: #4f46e5;
+        margin-bottom: 20px;
+    }
+
+    .graph {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        height: 500px;
+        margin: auto;
+        border-left: 3px solid #334155;
+        border-bottom: 3px solid #334155;
+        background:
+            linear-gradient(to right, transparent 49.5%, #e2e8f0 50%, transparent 50.5%),
+            linear-gradient(to top, transparent 49.5%, #e2e8f0 50%, transparent 50.5%);
+    }
+
+    .axis-x {
+        position: absolute;
+        bottom: -45px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-weight: bold;
+    }
+
+    .axis-y {
+        position: absolute;
+        top: 50%;
+        right: -85px;
+        transform: rotate(-90deg) translateY(-50%);
+        transform-origin: center;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .label {
+        position: absolute;
+        font-size: 13px;
+        font-weight: bold;
+        color: #475569;
+        text-align: center;
+    }
+
+    .country {
+        top: 8%;
+        left: 7%;
+    }
+
+    .team {
+        top: 8%;
+        right: 7%;
+    }
+
+    .impoverished {
+        bottom: 8%;
+        left: 7%;
+    }
+
+    .authoritarian {
+        bottom: 8%;
+        right: 7%;
+    }
+
+    .point {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: #ef4444;
+        border: 4px solid white;
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px #ef4444;
+        transform: translate(-50%, 50%);
+    }
+
+    .point-label {
+        position: absolute;
+        background: #ef4444;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 7px;
+        font-size: 12px;
+        white-space: nowrap;
+        transform: translate(10px, -35px);
+    }
+
+    .note {
+        background: #eef2ff;
+        border-right: 4px solid #4f46e5;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+        text-align: right;
+    }
+
+    .restart-btn {
+        border: none;
+        background: #64748b;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    footer {
+        text-align: center;
+        color: #64748b;
+        padding: 30px 15px;
+        font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+        header h1 {
+            font-size: 25px;
+        }
+
+        .graph {
+            height: 350px;
+        }
+
+        .axis-y {
+            right: -75px;
+            font-size: 12px;
+        }
+
+        .label {
+            font-size: 10px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>اختبار أسلوب القيادة</h1>
+    <p>نموذج بليك وموتون للشبكة الإدارية</p>
+</header>
+
+<div class="container">
+
+    <div class="intro">
+        <h2>كيف يعمل الاختبار؟</h2>
+        <p>
+            أجب عن كل عبارة باختيار إجابة واحدة فقط.
+            حاول أن تكون صريحاً في إجاباتك وأن تختار الإجابة التي تعبّر عنك أكثر.
+        </p>
+        <br>
+        <p>
+            <strong>0</strong> = أبداً &nbsp;&nbsp;
+            <strong>1</strong> = نادراً جداً &nbsp;&nbsp;
+            <strong>2</strong> = نادراً &nbsp;&nbsp;
+            <strong>3</strong> = أحياناً &nbsp;&nbsp;
+            <strong>4</strong> = غالباً &nbsp;&nbsp;
+            <strong>5</strong> = دائماً
+        </p>
+    </div>
+
+    <form id="quizForm">
+
+        <div class="question">
+            <div class="question-number">السؤال 1</div>
+            <div class="question-text">
+                أشجع أعضاء فريقي على المشاركة عند اتخاذ القرارات، وأحاول تطبيق أفكارهم واقتراحاتهم.
+            </div>
+            <label class="option"><input type="radio" name="q1" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q1" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q1" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q1" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q1" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q1" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 2</div>
+            <div class="question-text">
+                لا شيء أهم بالنسبة لي من تحقيق الهدف أو إنجاز المهمة.
+            </div>
+            <label class="option"><input type="radio" name="q2" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q2" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q2" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q2" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q2" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q2" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 3</div>
+            <div class="question-text">
+                أتابع الجدول الزمني بعناية للتأكد من إنجاز المهمة أو المشروع في الوقت المحدد.
+            </div>
+            <label class="option"><input type="radio" name="q3" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q3" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q3" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q3" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q3" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q3" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 4</div>
+            <div class="question-text">
+                أحب تدريب الأشخاص ومساعدتهم عندما يتعلمون مهام أو إجراءات جديدة.
+            </div>
+            <label class="option"><input type="radio" name="q4" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q4" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q4" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q4" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q4" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q4" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 5</div>
+            <div class="question-text">
+                كلما كانت المهمة أكثر تحدياً، زاد استمتاعي بها.
+            </div>
+            <label class="option"><input type="radio" name="q5" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q5" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q5" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q5" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q5" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q5" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 6</div>
+            <div class="question-text">
+                أشجع الموظفين وأعضاء الفريق على الإبداع في عملهم.
+            </div>
+            <label class="option"><input type="radio" name="q6" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q6" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q6" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q6" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q6" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q6" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 7</div>
+            <div class="question-text">
+                عندما أتابع مهمة معقدة حتى النهاية، أتأكد من أخذ كل التفاصيل بعين الاعتبار.
+            </div>
+            <label class="option"><input type="radio" name="q7" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q7" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q7" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q7" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q7" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q7" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 8</div>
+            <div class="question-text">
+                أجد أنه من السهل إنجاز عدة مهام معقدة في الوقت نفسه.
+            </div>
+            <label class="option"><input type="radio" name="q8" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q8" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q8" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q8" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q8" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q8" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 9</div>
+            <div class="question-text">
+                أحب قراءة المقالات والكتب والمجلات حول التدريب والقيادة وعلم النفس، ثم تطبيق ما أتعلمه.
+            </div>
+            <label class="option"><input type="radio" name="q9" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q9" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q9" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q9" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q9" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q9" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 10</div>
+            <div class="question-text">
+                عندما أصحح الأخطاء، لا أقلق من احتمال التأثير سلباً على علاقاتي مع الآخرين.
+            </div>
+            <label class="option"><input type="radio" name="q10" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q10" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q10" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q10" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q10" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q10" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 11</div>
+            <div class="question-text">
+                أدير وقتي بطريقة فعالة جداً.
+            </div>
+            <label class="option"><input type="radio" name="q11" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q11" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q11" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q11" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q11" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q11" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 12</div>
+            <div class="question-text">
+                أحب شرح الجوانب المعقدة والتفاصيل الخاصة بمهمة أو مشروع لأعضاء فريقي.
+            </div>
+            <label class="option"><input type="radio" name="q12" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q12" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q12" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q12" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q12" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q12" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 13</div>
+            <div class="question-text">
+                تقسيم المشاريع الكبيرة إلى مهام صغيرة وسهلة الإدارة أمر طبيعي بالنسبة لي.
+            </div>
+            <label class="option"><input type="radio" name="q13" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q13" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q13" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q13" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q13" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q13" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 14</div>
+            <div class="question-text">
+                لا شيء أهم بالنسبة لي من بناء فريق قوي ومتعاون.
+            </div>
+            <label class="option"><input type="radio" name="q14" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q14" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q14" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q14" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q14" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q14" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 15</div>
+            <div class="question-text">
+                أحب تحليل المشاكل.
+            </div>
+            <label class="option"><input type="radio" name="q15" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q15" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q15" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q15" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q15" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q15" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 16</div>
+            <div class="question-text">
+                أحترم الحدود الشخصية للآخرين.
+            </div>
+            <label class="option"><input type="radio" name="q16" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q16" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q16" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q16" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q16" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q16" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 17</div>
+            <div class="question-text">
+                تقديم النصائح لأعضاء فريقي لتحسين أدائهم أو سلوكهم أمر طبيعي بالنسبة لي.
+            </div>
+            <label class="option"><input type="radio" name="q17" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q17" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q17" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q17" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q17" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q17" value="5"> دائماً</label>
+        </div>
+
+        <div class="question">
+            <div class="question-number">السؤال 18</div>
+            <div class="question-text">
+                أحب قراءة المقالات والكتب والمجلات المتخصصة في مهنتي، ثم تطبيق الإجراءات الجديدة التي أتعلمها.
+            </div>
+            <label class="option"><input type="radio" name="q18" value="0"> أبداً</label>
+            <label class="option"><input type="radio" name="q18" value="1"> نادراً جداً</label>
+            <label class="option"><input type="radio" name="q18" value="2"> نادراً</label>
+            <label class="option"><input type="radio" name="q18" value="3"> أحياناً</label>
+            <label class="option"><input type="radio" name="q18" value="4"> غالباً</label>
+            <label class="option"><input type="radio" name="q18" value="5"> دائماً</label>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            عرض النتيجة
+        </button>
+
+    </form>
+
+    <div id="result">
+
+        <div class="result-card">
+            <h2>نتيجتك</h2>
+
+            <div class="scores">
+                <div class="score-box">
+                    <strong id="taskScore">0</strong>
+                    الاهتمام بالمهام والإنتاج
+                </div>
+
+                <div class="score-box">
+                    <strong id="peopleScore">0</strong>
+                    الاهتمام بالأفراد
+                </div>
+            </div>
+
+            <div>أسلوب القيادة:</div>
+            <div class="style-name" id="styleName"></div>
+
+            <div class="note" id="styleDescription"></div>
+
+            <br>
+
+            <button class="restart-btn" onclick="restartQuiz()">
+                إعادة الاختبار
+            </button>
+        </div>
+
+        <div class="graph-container">
+            <h2 class="graph-title">موقع نتيجتك على شبكة بليك وموتون</h2>
+
+            <div class="graph">
+
+                <div class="label country">
+                    نادي الريف<br>
+                    اهتمام مرتفع بالأفراد
+                </div>
+
+                <div class="label team">
+                    قائد الفريق<br>
+                    اهتمام مرتفع بالأفراد والمهام
+                </div>
+
+                <div class="label impoverished">
+                    القيادة الفقيرة<br>
+                    اهتمام منخفض بالأفراد والمهام
+                </div>
+
+                <div class="label authoritarian">
+                    القيادة السلطوية<br>
+                    اهتمام مرتفع بالمهام
+                </div>
+
+                <div class="point" id="resultPoint">
+                    <div class="point-label" id="pointLabel"></div>
+                </div>
+
+                <div class="axis-x">
+                    الاهتمام بالمهام / الإنتاج →
+                </div>
+
+                <div class="axis-y">
+                    ← الاهتمام بالأفراد
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    اختبار مبني على نموذج بليك وموتون للشبكة الإدارية
+</footer>
+
+<script>
+
+const peopleQuestions = [1, 4, 6, 9, 10, 12, 14, 16, 17];
+
+const taskQuestions = [2, 3, 5, 7, 8, 11, 13, 15, 18];
+
+document.getElementById("quizForm").addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    let peopleTotal = 0;
+    let taskTotal = 0;
+
+    for (let i = 1; i <= 18; i++) {
+
+        const selected = document.querySelector(
+            'input[name="q' + i + '"]:checked'
+        );
+
+        if (!selected) {
+            alert("المرجو الإجابة عن جميع الأسئلة قبل عرض النتيجة.");
+            return;
+        }
+
+        const value = Number(selected.value);
+
+        if (peopleQuestions.includes(i)) {
+            peopleTotal += value;
+        }
+
+        if (taskQuestions.includes(i)) {
+            taskTotal += value;
+        }
+    }
+
+    const peopleScore = peopleTotal * 0.2;
+    const taskScore = taskTotal * 0.2;
+
+    document.getElementById("peopleScore").textContent =
+        peopleScore.toFixed(1) + " / 9";
+
+    document.getElementById("taskScore").textContent =
+        taskScore.toFixed(1) + " / 9";
+
+    let style = "";
+    let description = "";
+
+    if (taskScore >= 5 && peopleScore >= 5) {
+
+        style = "قائد الفريق";
+        description =
+            "يهتم هذا الأسلوب بتحقيق النتائج والمهام، وفي الوقت نفسه يهتم ببناء فريق متعاون وتحفيز أفراده.";
+
+    } else if (taskScore >= 5 && peopleScore < 5) {
+
+        style = "القيادة السلطوية";
+        description =
+            "يركز هذا الأسلوب بشكل أكبر على إنجاز المهام وتحقيق الأهداف والنتائج.";
+
+    } else if (taskScore < 5 && peopleScore >= 5) {
+
+        style = "نادي الريف";
+        description =
+            "يركز هذا الأسلوب بشكل أكبر على العلاقات وراحة أعضاء الفريق والانسجام بينهم.";
+
+    } else {
+
+        style = "القيادة الفقيرة";
+        description =
+            "يظهر في هذا الأسلوب اهتمام منخفض نسبياً بالمهام وبالأفراد.";
+
+    }
+
+    document.getElementById("styleName").textContent = style;
+    document.getElementById("styleDescription").textContent = description;
+
+    /*
+       وضع النقطة على الرسم:
+       X = الاهتمام بالمهام
+       Y = الاهتمام بالأفراد
+    */
+
+    const graph = document.querySelector(".graph");
+
+    const x = (taskScore / 9) * 100;
+    const y = (peopleScore / 9) * 100;
+
+    const point = document.getElementById("resultPoint");
+
+    point.style.left = x + "%";
+    point.style.bottom = y + "%";
+
+    document.getElementById("pointLabel").textContent =
+        "المهام: " + taskScore.toFixed(1) +
+        " | الأفراد: " + peopleScore.toFixed(1);
+
+    document.getElementById("quizForm").style.display = "none";
+    document.getElementById("result").style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+});
+
+
+function restartQuiz() {
+
+    document.getElementById("quizForm").reset();
+
+    document.getElementById("quizForm").style.display = "block";
+
+    document.getElementById("result").style.display = "none";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+</script>
+
+</body>
+</html>
